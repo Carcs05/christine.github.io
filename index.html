@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>HTML 5 Boilerplate</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="normalize.css" media="screen">
+    <link rel="stylesheet" href="resets.css" media="screen">
+    <link rel="stylesheet" href="styles.css" media="screen">
+    <script>alert("Hello World! I am an alert box.");</script>
+</head>
+<body>
+    <div class="expected-output">
+        <div class="header-text">I am header with an unordered list of hyperlinks</div>
+      
+        <nav>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+
+        <figure>
+            <img src="scenery.jpg" alt="Scenery" class="scenery-image">
+            <figcaption> This is a picture of a scenery</figcaption>
+        </figure>
+
+        <div class="page-content-text">I am division with class equal to page-content that encloses all other division elements below</div>
+
+        <h1>Hello! I am a text with the largest heading</h1>
+
+        <div class="page-content">
+            <div class="card" id="about">
+                <p class="card-header">About</p>
+                <p class="card-body">Hello! Tell us about yourself.</p>
+            </div>
+            <div class="card" id="education">
+                <p class="card-header">Education</p>
+                <p class="card-body">Tell us about your education</p>
+            </div>
+            <div class="card" id="skills">
+                <p class="card-header">Skills</p>
+                <p class="card-body">Tell us about your IT Skills</p>
+            </div>
+            <div class="card" id="portfolio">
+                <p class="card-header">Portfolio</p>
+                <p class="card-body">Share your previous IT projects</p>
+            </div>
+
+            <!-- Step 1: Added the search bar above the course list -->
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search courses by description..." onkeyup="searchCourses()">
+            </div>
+
+            <h2>Subjects Taken</h2>
+            <div id="course-list"></div>
+                 <ul id="courses-ul"></ul>
+        </div>
+    </div>
+ 
+    <script>
+        const jsonURL = "https://raw.githubusercontent.com/Carcs05/ebcas.github.io/refs/heads/main/courses.json"; 
+
+        fetch(jsonURL)
+    .then(response => response.json()) 
+    .then(data => {
+        let courseListDiv = document.getElementById("course-list");
+        
+        // Create a ul element
+        let ulElement = document.createElement("ul");
+        
+        if (data.courses && Array.isArray(data.courses)) {
+            data.courses.forEach(course => {
+                let listItem = document.createElement("li");
+                listItem.textContent = `${course.year_level} - ${course.sem} - ${course.code}: ${course.description} (Credits: ${course.credit})`;
+                ulElement.appendChild(listItem);
+            });
+            
+            // Append the ul to the div
+            courseListDiv.appendChild(ulElement);
+        } else {
+            console.error("Expected 'courses' array but got:", data);
+        }
+    })
+    .catch(error => console.error("Error fetching courses:", error));
+
+        // Step 2: JavaScript to implement search functionality
+        function searchCourses() {
+            const searchValue = document.getElementById("searchInput").value.toLowerCase();
+            const courseList = document.getElementById("course-list");
+            const courses = courseList.getElementsByTagName("li");
+
+            for (let i = 0; i < courses.length; i++) {
+                const course = courses[i];
+                const courseText = course.textContent.toLowerCase();
+
+                // If the course description contains the search value, show it, else hide it
+                if (courseText.includes(searchValue)) {
+                    course.style.display = "";
+                } else {
+                    course.style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
+
