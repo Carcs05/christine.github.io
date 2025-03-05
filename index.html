@@ -14,7 +14,7 @@
 <body>
     <div class="expected-output">
         <div class="header-text">I am header with an unordered list of hyperlinks</div>
-      
+        
         <nav>
             <ul>
                 <li><a href="#about">About</a></li>
@@ -52,26 +52,31 @@
                 <p class="card-body">Share your previous IT projects</p>
             </div>
 
-            <!-- Step 1: Added the search bar above the course list -->
-            <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search courses by description..." onkeyup="searchCourses()">
+            
+            <div class="card">
+                <p class="card-header">Subjects Taken</p>
+                <div class="card-body">
+                    <!-- Search Bar -->
+                    <div class="search-bar">
+                        <input type="text" id="searchInput" placeholder="Search courses by description..." onkeyup="searchCourses()">
+                    </div>
+                    
+                    <div id="course-list">
+                        <ul id="courses-ul"></ul>
+                    </div>
+                </div>
             </div>
-
-            <h2>Subjects Taken</h2>
-            <div id="course-list"></div>
-                 <ul id="courses-ul"></ul>
         </div>
     </div>
  
     <script>
-        const jsonURL = "https://raw.githubusercontent.com/Carcs05/christine.github.io/refs/heads/main/courses.json"; 
+        const jsonURL = "https://raw.githubusercontent.com/Carcs05/ebcas.github.io/refs/heads/main/courses.json"; 
 
         fetch(jsonURL)
     .then(response => response.json()) 
     .then(data => {
         let courseListDiv = document.getElementById("course-list");
         
-        // Create a ul element
         let ulElement = document.createElement("ul");
         
         if (data.courses && Array.isArray(data.courses)) {
@@ -81,7 +86,6 @@
                 ulElement.appendChild(listItem);
             });
             
-            // Append the ul to the div
             courseListDiv.appendChild(ulElement);
         } else {
             console.error("Expected 'courses' array but got:", data);
@@ -89,7 +93,6 @@
     })
     .catch(error => console.error("Error fetching courses:", error));
 
-        // Step 2: JavaScript to implement search functionality
         function searchCourses() {
             const searchValue = document.getElementById("searchInput").value.toLowerCase();
             const courseList = document.getElementById("course-list");
@@ -99,7 +102,6 @@
                 const course = courses[i];
                 const courseText = course.textContent.toLowerCase();
 
-                // If the course description contains the search value, show it, else hide it
                 if (courseText.includes(searchValue)) {
                     course.style.display = "";
                 } else {
